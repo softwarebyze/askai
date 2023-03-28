@@ -1,25 +1,41 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+import "./App.css";
+const { Configuration, OpenAIApi } = require("openai");
+const apiKey = "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";
 
-function App() {
+async function askAi(prompt) {
+  const configuration = new Configuration({ apiKey });
+  const openai = new OpenAIApi(configuration);
+
+  const completion = await openai.createCompletion({
+    model: "text-davinci-003",
+    prompt,
+  });
+  console.log(completion);
+  return completion.data.choices[0].text;
+}
+
+export default function App() {
+  const [prompt, setPrompt] = useState("");
+  const [response, setResponse] = useState("");
+  function handleChange(e) {
+    setPrompt(e.target.value);
+  }
+  async function handleSubmit(e) {
+    e.preventDefault();
+    const aiResponse = await askAi(prompt);
+    setResponse(aiResponse);
+  }
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>
+        AskAI (by <a href="https://github.com/softwarebyze">@softwarebyze</a>)
+      </h1>
+      <form onSubmit={handleSubmit}>
+        <input value={prompt} onChange={handleChange} />
+        <button type="submit">Ask!</button>
+      </form>
+      <p>{response}</p>
     </div>
   );
 }
-
-export default App;
