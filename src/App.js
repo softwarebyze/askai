@@ -23,8 +23,12 @@ export default function App() {
   }
   async function handleSubmit(e) {
     e.preventDefault();
-    const aiResponse = await askAi(prompt);
-    setResponse(aiResponse);
+    try {
+      const aiResponse = await askAi(prompt);
+      setResponse(aiResponse);
+    } catch (e) {
+      setResponse("AI is tired 💤💤 Try again l8r.");
+    }
   }
   return (
     <div className="App">
