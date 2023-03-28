@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./App.css";
 const { Configuration, OpenAIApi } = require("openai");
-const apiKey = "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";
+const apiKey = process.env.REACT_APP_OPENAI_API_KEY;
 
 async function askAi(prompt) {
   const configuration = new Configuration({ apiKey });
